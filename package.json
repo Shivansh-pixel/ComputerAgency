@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.29.1",
     "@supabase/supabase-js": "^2.39.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
