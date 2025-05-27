@@ -11,8 +11,8 @@ import { useAppContext } from "@/context/AppContext";
 import React from "react";
 
 const Product = () => {
-
-    const { id } = useParams();
+    const params = useParams();
+    const id = params?.id;
 
     const { products, router, addToCart } = useAppContext()
 
@@ -25,7 +25,9 @@ const Product = () => {
     }
 
     useEffect(() => {
-        fetchProductData();
+        if (id && products.length) {
+            fetchProductData();
+        }
     }, [id, products.length])
 
     return productData ? (<>
@@ -36,7 +38,7 @@ const Product = () => {
                     <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
                         <Image
                             src={mainImage || productData.image[0]}
-                            alt="alt"
+                            alt={productData.name}
                             className="w-full h-auto object-cover mix-blend-multiply"
                             width={1280}
                             height={720}
@@ -52,13 +54,12 @@ const Product = () => {
                             >
                                 <Image
                                     src={image}
-                                    alt="alt"
+                                    alt={`${productData.name} view ${index + 1}`}
                                     className="w-full h-auto object-cover mix-blend-multiply"
                                     width={1280}
                                     height={720}
                                 />
                             </div>
-
                         ))}
                     </div>
                 </div>
@@ -69,14 +70,16 @@ const Product = () => {
                     </h1>
                     <div className="flex items-center gap-2">
                         <div className="flex items-center gap-0.5">
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
+                            <Image className="h-4 w-4" src={assets.star_icon} alt="star icon" width={16} height={16} />
+                            <Image className="h-4 w-4" src={assets.star_icon} alt="star icon" width={16} height={16} />
+                            <Image className="h-4 w-4" src={assets.star_icon} alt="star icon" width={16} height={16} />
+                            <Image className="h-4 w-4" src={assets.star_icon} alt="star icon" width={16} height={16} />
                             <Image
                                 className="h-4 w-4"
                                 src={assets.star_dull_icon}
-                                alt="star_dull_icon"
+                                alt="star dull icon"
+                                width={16}
+                                height={16}
                             />
                         </div>
                         <p>(4.5)</p>
@@ -96,11 +99,11 @@ const Product = () => {
                             <tbody>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Brand</td>
-                                    <td className="text-gray-800/50 ">Generic</td>
+                                    <td className="text-gray-800/50">Generic</td>
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Color</td>
-                                    <td className="text-gray-800/50 ">Multi</td>
+                                    <td className="text-gray-800/50">Multi</td>
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Category</td>
@@ -128,7 +131,12 @@ const Product = () => {
                     <div className="w-28 h-0.5 bg-orange-600 mt-2"></div>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full">
-                    {products.slice(0, 5).map((product, index) => <ProductCard key={index} product={product} />)}
+                    {products.slice(0, 5).map((product, index) => (
+                        <ProductCard 
+                            key={index} 
+                            product={product}
+                        />
+                    ))}
                 </div>
                 <button className="px-8 py-2 mb-16 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
                     See more
@@ -136,8 +144,7 @@ const Product = () => {
             </div>
         </div>
         <Footer />
-    </>
-    ) : <Loading />
+    </>) : <Loading />
 };
 
 export default Product;
